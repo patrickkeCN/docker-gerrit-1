@@ -5,6 +5,8 @@ MAINTAINER zsx <thinkernel@gmail.com>
 RUN apt-get update && DEBIAN_FRONTEND=noninteractive apt-get install -y \
     libcgi-pm-perl \
     gitweb \
+	vim \
+	sudo \
   && rm -rf /var/lib/apt/lists/*
 ENV GERRIT_HOME /var/gerrit
 ENV GERRIT_SITE ${GERRIT_HOME}/review_site
@@ -13,6 +15,7 @@ ENV GERRIT_VERSION 2.11
 ENV GERRIT_USER gerrit2
 
 RUN useradd -m -d "$GERRIT_HOME" -u 1000 -U  -s /bin/bash $GERRIT_USER
+RUN echo 'gerrit2 ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 #Download gerrit.war
 RUN curl -L https://gerrit-releases.storage.googleapis.com/gerrit-${GERRIT_VERSION}.war -o $GERRIT_WAR
